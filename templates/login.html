@@ -3,9 +3,7 @@
 {% block title %}Login{% endblock %}
 
 {% block nav %}
-<ul>
-    <li><p><a href="{{ url_for('index') }}">Home</a></p></p></li>
-</ul>
+{% include 'header/nonlogin.html' %}
 {% endblock %}
 
 {% block main %}
