@@ -1,29 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-    <title>Login | KU-OSS</title>
-</head>
-<body>
-    <div>
-            <form method="post" action=".">
-            <table>
-                <tr>
-                    <th colspan="2"><h1>Please Login</h1></th>
-                </tr>
-                <tr>
-                    <td><p>Username: </p></td>
-                    <td><input type="text" name="user" required /></td>
-                </tr>
-                <tr>
-                    <td><p>Password: </p></td>
-                    <td><input type="password" name="pass" required /></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><input type="submit" name="login" value="Login" /></td>
-                </tr>
-            </table>   
-        </form>
-    </div>
-</body>
-</html>
+{% extends "main.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block nav %}
+<ul>
+    <li><p><a href="{{ url_for('index') }}">Home</a></p></p></li>
+</ul>
+{% endblock %}
+
+{% block main %}
+<div>
+    <form method="post" action=".">
+        <table>
+            <tr>
+                <th colspan="2"><h1>Please Login</h1></th>
+            </tr>
+            <tr>
+                <td><p>Username: </p></td>
+                <td><input type="text" name="user" required /></td>
+            </tr>
+            <tr>
+                <td><p>Password: </p></td>
+                <td><input type="password" name="pass" required /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" name="login" value="Login" /></td>
+            </tr>
+        </table>   
+    </form>
+</div>
+{% endblock %}
