@@ -1,0 +1,3 @@
+graft kuoss/templates
+graft kuos/static
+include kuoss/data.db

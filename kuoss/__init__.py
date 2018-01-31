@@ -1,0 +1,1 @@
+from .kuoss import app
