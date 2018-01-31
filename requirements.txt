@@ -1,0 +1,11 @@
+bcrypt==3.1.4
+cffi==1.11.4
+click==6.7
+Flask==0.12.2
+itsdangerous==0.24
+Jinja2==2.10
+-e git+https://github.com/guitarpawat/ku-oss.git@af2bc3afc3d6c882c4aa0e3744ea7832d34019c7#egg=kuoss
+MarkupSafe==1.0
+pycparser==2.18
+six==1.11.0
+Werkzeug==0.14.1
