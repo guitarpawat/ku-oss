@@ -1,5 +1,10 @@
 {% extends "main.html" %}
 
+{% block head %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+        {{ super() }}
+{% endblock %}
+
 {% block title %}Login{% endblock %}
 
 {% block nav %}
