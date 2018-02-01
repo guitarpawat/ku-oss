@@ -11,8 +11,6 @@ app.config.from_object(__name__)
 app.config.update(dict(
     DATABASE=os.path.join(app.root_path, 'data.db'),
     SECRET_KEY='NotForProduction',
-    USERNAME='admin',
-    PASSWORD='default'
 ))
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
@@ -30,6 +28,26 @@ def get_db():
         g.sqlite_db = connect_db()
     return g.sqlite_db
 
+def extract_status(status):
+    """
+    status code = 111111
+    first - current student
+    2nd - update request
+    3rd - create request
+    4th - approve request
+    5th - payment
+    6th - superuser/admin
+    0 = alumni
+    """
+    num = int(status)
+    if num < 0 or num > 63:
+        return None
+    arr = []
+    for i in range(6):
+        arr.insert(0,num % 2)
+        num = num >> 1
+    return arr
+
 # TEAR DOWN BELOW
 @app.teardown_appcontext
 def close_db(error):
@@ -40,14 +58,40 @@ def close_db(error):
 # APP ROUTE BELOW
 @app.route('/')
 def index():
+    if session.get('user') is not None:
+        return '<a href="logout">LOGOUT</a>'
     return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
+    if session.get('user') is not None:
+        return redirect(url_for('index'))
     if request.method == 'POST':
-        return 'TODO!'
+        db = get_db()
+        user = [request.form['user']]
+        info = db.execute('SELECT * FROM users WHERE user=? LIMIT 1',user)
+        result = info.fetchone()
+        if result is None:
+            return render_template('login.html',info='Wrong Username and/or Password')
+        if bcrypt.checkpw(str.encode(request.form['pass']),result[3]):
+            session['id'] = result[0]
+            session['uid'] = result[1]
+            session['user'] = result[2]
+            session['name'] = result[4]
+            session['surname'] = result[5]
+            session['status'] = result[6]
+            session['status_arr'] = extract_status(result[6])
+            return redirect(url_for('index'))
+        else:
+            return render_template('login.html',info='Wrong Username and/or Password')
     return render_template('login.html')
+
+@app.route('/logout')
+@app.route('/logout/')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
 
 # COMMAND LINE INTERFACE BELOW
 def init_db():
@@ -80,3 +124,8 @@ def new_user():
     db.execute('INSERT INTO users (uid,user,hash,name,surname,status) VALUES (?,?,?,?,?,?)', data)
     db.commit()
     print("User Added Successful")
+
+@app.cli.command('status_test')
+def status_test():
+    s = input("Enter int: ")
+    print(extract_status(s))
