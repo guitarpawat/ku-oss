@@ -1,7 +1,7 @@
 MANIFEST.in
 kuoss/__init__.py
 kuoss/data.db
-kuoss/hello.py
+kuoss/kuoss.py
 kuoss.egg-info/PKG-INFO
 kuoss.egg-info/SOURCES.txt
 kuoss.egg-info/dependency_links.txt

@@ -13,7 +13,7 @@
 
 {% block main %}
 <div class="login">
-    <form method="post" action=".">
+    <form method="post" action="{{ url_for('login') }}">
         <table>
             <tr>
                 <th colspan="2"><h1>Please Login</h1></th>
@@ -25,6 +25,9 @@
             <tr>
                 <td><p>Password: </p></td>
                 <td><input type="password" name="pass" class="text" required /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><p class="warning">{{ info }}</p></td>
             </tr>
             <tr>
                 <td colspan="2"><input type="submit" name="login" value="Login" class="submit" /></td>
